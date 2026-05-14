@@ -11,10 +11,7 @@ from vector_store import create_vector_store
 from rag_pipeline import ask_question
 
 app = FastAPI()
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
