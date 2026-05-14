@@ -11,11 +11,10 @@ from vector_store import create_vector_store
 from rag_pipeline import ask_question
 
 app = FastAPI()
-origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -72,6 +71,6 @@ def upload_file(file: UploadFile = File(...)):
     # Process file
     docs = load_document(file_path)
     chunks = split_text(docs)
-    create_vector_store(chunks)
+    #create_vector_store(chunks)
 
     return {"message": "File uploaded successfully"}
