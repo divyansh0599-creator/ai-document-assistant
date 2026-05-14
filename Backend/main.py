@@ -33,16 +33,8 @@ class QuestionRequest(BaseModel):
 @app.get("/")
 def home():
 
-    docs = load_document("../Data/sample.pdf")
-
-    chunks = split_text(docs)
-
-    db = create_vector_store(chunks)
-
     return {
-        "pages_loaded": len(docs),
-        "chunks_created": len(chunks),
-        "vector_db": "created successfully"
+        "message": "AI Backend Running"
     }
 
 
