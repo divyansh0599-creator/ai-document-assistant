@@ -1,10 +1,14 @@
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 def get_embeddings():
 
-    embedding_model = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/paraphrase-MiniLM-L3-v2"
+    embeddings = HuggingFaceEndpointEmbeddings(
+        model="sentence-transformers/all-MiniLM-L6-v2",
+        huggingfacehub_api_token=os.getenv("HF_TOKEN")
     )
 
-    return embedding_model
+    return embeddings
