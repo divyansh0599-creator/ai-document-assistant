@@ -3,6 +3,16 @@ from fastapi import UploadFile, File
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from auth.database import engine
+from auth.models import Base
+from sqlalchemy.orm import Session
+from fastapi import Depends
+from auth.schemas import LoginRequest
+from auth.auth import authenticate_user, create_access_token
+
+from auth.database import SessionLocal
+from auth.schemas import RegisterRequest
+from auth.auth import create_user
 
 from conversation_memory import add_turn, clear_history, get_history
 from document_loader import load_document
@@ -11,6 +21,18 @@ from vector_store import create_vector_store
 from rag_pipeline import ask_question
 
 app = FastAPI()
+Base.metadata.create_all(bind=engine)
+
+def get_db():
+
+    db = SessionLocal()
+
+    try:
+        yield db
+
+    finally:
+        db.close()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,6 +55,47 @@ def home():
         "message": "AI Backend Running"
     }
 
+@app.post("/register")
+def register_user(
+    user: RegisterRequest,
+    db: Session = Depends(get_db)
+):
+
+    new_user = create_user(db, user)
+
+    return {
+        "message": "User created successfully",
+        "username": new_user.username,
+        "email": new_user.email
+    }
+
+@app.post("/login")
+def login_user(
+    user: LoginRequest,
+    db: Session = Depends(get_db)
+):
+
+    authenticated_user = authenticate_user(
+        db,
+        user
+    )
+
+    if not authenticated_user:
+
+        return {
+            "message": "Invalid email or password"
+        }
+
+    access_token = create_access_token(
+        data={
+            "sub": authenticated_user.email
+        }
+    )
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
 
 @app.post("/ask")
 def ask_question_api(data: QuestionRequest):
