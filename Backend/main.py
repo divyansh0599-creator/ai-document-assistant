@@ -19,6 +19,7 @@ from document_loader import load_document
 from text_splitter import split_text
 from vector_store import create_vector_store
 from rag_pipeline import ask_question
+from fastapi import HTTPException
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
@@ -36,7 +37,10 @@ def get_db():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -69,6 +73,8 @@ def register_user(
         "email": new_user.email
     }
 
+
+
 @app.post("/login")
 def login_user(
     user: LoginRequest,
@@ -82,9 +88,10 @@ def login_user(
 
     if not authenticated_user:
 
-        return {
-            "message": "Invalid email or password"
-        }
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
 
     access_token = create_access_token(
         data={

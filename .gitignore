@@ -6,3 +6,6 @@ __pycache__/
 chroma_db/
 dist/
 build/
+users.db
+Backend/users.db
+Backend/vector_db/

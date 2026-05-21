@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "https://ai-document-backend-sveg.onrender.com";
+const API_BASE_URL = "http://localhost:8000";
 
 function Chat() {
   const [question, setQuestion] = useState("");
