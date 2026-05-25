@@ -26,7 +26,7 @@ const Signup = () => {
 
         } catch (error) {
             console.error(error);
-            alert("Signup failed");
+            alert("Signup failed",error);
         }
     };
 

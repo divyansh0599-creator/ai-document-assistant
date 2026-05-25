@@ -1,8 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
+import Auth from "../component/Auth";
 
-import Login from "../component/Login";
-import Signup from "../component/Signup";
 import Chat from "../component/chat";
 
 import ProtectedRoute from "../component/ProtectedRoutes";
@@ -10,11 +9,17 @@ import ProtectedRoute from "../component/ProtectedRoutes";
 const AppRoutes = () => {
 
     return (
-        <Routes>
+         <Routes>
 
-            <Route path="/login" element={<Login />} />
+            <Route
+                path="/"
+                element={<Navigate to="/auth" />}
+            />
 
-            <Route path="/signup" element={<Signup />} />
+            <Route
+                path="/auth"
+                element={<Auth />}
+            />
 
             <Route
                 path="/chat"

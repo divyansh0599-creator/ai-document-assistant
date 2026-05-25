@@ -1,7 +1,5 @@
 import { useMemo, useState } from "react";
-import axios from "axios";
-
-const API_BASE_URL = "http://localhost:8000";
+import api from "../services/api";
 
 function Chat() {
   const [question, setQuestion] = useState("");
@@ -35,7 +33,7 @@ function Chat() {
       const formData = new FormData();
       formData.append("file", file);
 
-      await axios.post(`${API_BASE_URL}/upload`, formData);
+      await api.post("/upload", formData);
       setStatus(`${file.name} is ready.`);
     } catch {
       setError("Upload failed. Check that the backend is running and try again.");
@@ -54,7 +52,7 @@ function Chat() {
       setIsAsking(true);
       setError("");
 
-      const res = await axios.post(`${API_BASE_URL}/ask`, {
+      const res = await api.post("/ask", {
         question: question.trim(),
         session_id: sessionId,
       });
@@ -75,7 +73,7 @@ function Chat() {
   const clearHistory = async () => {
     try {
       setError("");
-      await axios.delete(`${API_BASE_URL}/history/${sessionId}`);
+      await api.delete(`/history/${sessionId}`);
       setMessages([]);
       setStatus("Conversation cleared.");
     } catch {

@@ -13,6 +13,8 @@ from auth.auth import authenticate_user, create_access_token
 from auth.database import SessionLocal
 from auth.schemas import RegisterRequest
 from auth.auth import create_user
+from auth.auth import get_current_user
+from auth.models import User
 
 from conversation_memory import add_turn, clear_history, get_history
 from document_loader import load_document
@@ -105,7 +107,10 @@ def login_user(
     }
 
 @app.post("/ask")
-def ask_question_api(data: QuestionRequest):
+def ask_question_api(
+    data: QuestionRequest,
+    current_user: User = Depends(get_current_user)
+):
 
     question = data.question
     session_id = data.session_id
@@ -130,8 +135,12 @@ def clear_history_api(session_id: str):
 
     return {"message": "History cleared successfully"}
 
+
 @app.post("/upload")
-def upload_file(file: UploadFile = File(...)):
+def upload_file(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
 
     file_path = f"../Data/{file.filename}"
 
