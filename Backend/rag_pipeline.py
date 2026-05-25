@@ -20,7 +20,7 @@ def ask_question(query, history=None):
 
     retrieval_query = build_retrieval_query(query, history)
 
-    results = db.similarity_search(retrieval_query, k=3)
+    results = db.similarity_search(retrieval_query, k=8)
 
     context = ""
 

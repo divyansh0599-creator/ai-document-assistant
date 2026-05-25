@@ -23,7 +23,8 @@ def generate_answer(question, context, history=None):
     prompt = f"""
 You are a document assistant.
 
-Answer the question ONLY using the provided document context and previous conversation.
+Use previous conversation only to understand references.
+Use only the document context as factual evidence.
 
 If the answer is not present in the context, respond with:
 "I could not find the answer in the uploaded document."

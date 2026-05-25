@@ -1,15 +1,16 @@
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.document_loaders import WebBaseLoader
+from pathlib import Path
 
-# def load_website(url):
-#     loader = WebBaseLoader(url)
-#     docs = loader.load()
-#     return docs
+from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader
+
 
 def load_document(file_path):
+    extension = Path(file_path).suffix.lower()
 
-    loader = PyPDFLoader(file_path)
+    if extension == ".pdf":
+        loader = PyPDFLoader(file_path)
+    elif extension == ".docx":
+        loader = Docx2txtLoader(file_path)
+    else:
+        raise ValueError("Unsupported file type. Please upload a PDF or DOCX file.")
 
-    documents = loader.load()
-
-    return documents
+    return loader.load()

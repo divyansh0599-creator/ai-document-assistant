@@ -148,8 +148,15 @@ def upload_file(
         f.write(file.file.read())
     
     # Process file
-    docs = load_document(file_path)
-    chunks = split_text(docs)
-    #create_vector_store(chunks)
+    try:
+        docs = load_document(file_path)
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        )
 
-    return {"message": "File uploaded successfully"}
+    chunks = split_text(docs)
+    create_vector_store(chunks)
+
+    return {"message": "File uploaded and processed successfully"}
