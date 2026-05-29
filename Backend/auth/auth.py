@@ -22,7 +22,7 @@ SECRET_KEY = "mysecretkey"
 
 ALGORITHM = "HS256"
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 24 * 60
 
 def hash_password(password: str):
 

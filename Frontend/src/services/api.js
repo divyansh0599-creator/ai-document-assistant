@@ -25,7 +25,7 @@ api.interceptors.response.use(
 
             localStorage.removeItem("token");
 
-            window.location.href = "/auth";
+            window.dispatchEvent(new Event("auth:logout"));
         }
 
         return Promise.reject(error);
