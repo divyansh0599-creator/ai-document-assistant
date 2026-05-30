@@ -13,6 +13,7 @@ api.interceptors.request.use((config) => {
 
     return config;
 });
+
 // RESPONSE INTERCEPTOR
 
 api.interceptors.response.use(
